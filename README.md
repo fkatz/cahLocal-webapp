@@ -1,4 +1,6 @@
-# vuetest
+# cahLocal Web App
+Front end for
+https://github.com/fkatz/cahLocal
 
 ## Project setup
 ```
