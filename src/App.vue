@@ -1,29 +1,39 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-  </div>
+  <v-app>
+    <Navbar/>
+    <keep-alive>
+    <router-view/>
+    </keep-alive>
+  </v-app>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
+import { Component, Vue, Watch } from "vue-property-decorator";
+import Vuetify from "vuetify";
+import Navbar from "./components/Navbar.vue";
+import "vuetify/dist/vuetify.css";
+import colors from "vuetify/es5/util/colors";
+
+Vue.use(Vuetify, {
+  iconfont: "md",
+  options: {
+    customProperties: true
+  }
+});
+//import "../node_modules/materialize-css/dist/css/materialize.min.css"
+//import "../node_modules/materialize-css/dist/js/materialize.min.js"
 
 @Component({
   components: {
-    HelloWorld,
-  },
+    Navbar
+  }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  @Watch("$i18n.locale") onLocaleChanged(){
+    document.title = this.$t("appname").toString();
+  }
+}
 </script>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss" scoped>
 </style>
