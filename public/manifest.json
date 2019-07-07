@@ -1,5 +1,6 @@
 {
     "name": "Cards Against Your Mom",
+    "start_url": ".",
     "display": "standalone",
     "background_color": "#3f51b5",
     "theme_color": "#3f51b5",
