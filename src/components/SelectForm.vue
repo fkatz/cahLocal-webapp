@@ -9,10 +9,11 @@
         <h3>{{$t('select-subtitle-czar')}}</h3>
       </div>
       <div v-else>
-        <h2>
-          <span v-if="!hasSelected">{{$t('select-title-player',{count: black.requires})}}</span>
-          <span v-else>{{$t('select-title-player-selected')}}</span>
-        </h2>
+        <h2>{{$t('select-title-player',{czar:czar})}}</h2>
+        <h3>
+          <span v-if="!hasSelected">{{$t(black.requires==1?'select-subtitle-player':'select-subtitle-player_plural',{count: black.requires})}}</span>
+          <span v-else>{{$t('select-subtitle-player-selected')}}</span>
+        </h3>
       </div>
       <v-container grid-list-lg pa-0 mt-3>
         <v-layout row wrap>
@@ -67,6 +68,11 @@ export default class SelectForm extends Vue {
       return null;
     } else return this.prop.select.isCzar;
   }
+  get czar() {
+    if (this.prop.select == undefined || this.prop.select.isCzar == undefined) {
+      return null;
+    } else return this.prop.select.czar;
+  }
   private toggle(card: any) {
     if (!this.hasSelected && !this.isCzar) {
       if (!this.selected.includes(card)) {
@@ -76,7 +82,7 @@ export default class SelectForm extends Vue {
   }
   private sendCards() {
     if (this.selected.length != this.black.requires) {
-      this.$emit("error","select", this.black.requires);
+      this.$emit("error", "select", this.black.requires);
     } else {
       this.$emit("select", this.selected);
       this.hasSelected = true;
@@ -135,17 +141,19 @@ export default class SelectForm extends Vue {
   "en": {
     "select-title-czar" : "You are the Czar.",
     "select-subtitle-czar": "Waiting for the players...",
-    "select-title-player":"Select {count} card.",
-    "select-title-player_plural":"Select {count} cards.",
-    "select-title-player-selected":"Waiting for the other players...",
+    "select-title-player":"{czar} is the Czar.",
+    "select-subtitle-player":"Select {count} card.",
+    "select-subtitle-player_plural":"Select {count} cards.",
+    "select-subtitle-player-selected":"Waiting for the other players...",
     "waiting": "Waiting..."
   },
   "es": {
     "select-title-czar" : "Eres el juez",
     "select-subtitle-czar": "Esperando a los demás jugadores...",
-    "select-title-player":"Selecciona {count} carta.",
-    "select-title-player_plural":"Selecciona {count} cartas.",
-    "select-title-player-selected":"Esperando a los demás jugadores...",
+    "select-title-player":"{czar} es el juez.",
+    "select-subtitle-player":"Selecciona {count} carta.",
+    "select-subtitle-player_plural":"Selecciona {count} cartas.",
+    "select-subtitle-player-selected":"Esperando a los demás jugadores...",
     "waiting": "Esperando"
   }
 }
