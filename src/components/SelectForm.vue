@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card class="card" dark>
-      <v-card-title primary-title :style="{fontSize:fontSize(black.text)}">{{black.text}}</v-card-title>
+      <v-card-title :style="{fontSize:fontSize(black.text)}">{{black.text}}</v-card-title>
     </v-card>
     <div class="mt-3">
       <div v-if="isCzar">
@@ -11,7 +11,9 @@
       <div v-else>
         <h2>{{$t('select-title-player',{czar:czar})}}</h2>
         <h3>
-          <span v-if="!hasSelected">{{$t(black.requires==1?'select-subtitle-player':'select-subtitle-player_plural',{count: black.requires})}}</span>
+          <span
+            v-if="!hasSelected"
+          >{{$t(black.requires==1?'select-subtitle-player':'select-subtitle-player_plural',{count: black.requires})}}</span>
           <span v-else>{{$t('select-subtitle-player-selected')}}</span>
         </h3>
       </div>
@@ -23,28 +25,33 @@
               @click="toggle(card);"
               v-ripple="!hasSelected&&!isCzar"
               v-bind:class="{ active: selected.includes(card) }"
+              :style="{pointerEvents:isCzar?'none':'auto'}"
             >
-              <v-card-title primary-title :style="{fontSize:fontSize(card.text)}">{{card.text}}</v-card-title>
+              <v-card-title :style="{fontSize:fontSize(card.text)}">{{card.text}}</v-card-title>
               <div v-if="selected.includes(card)" class="number">{{selected.indexOf(card)+1}}</div>
             </v-card>
           </v-flex>
         </v-layout>
       </v-container>
     </div>
-    <v-layout mt-2 row right v-if="!isCzar">
-      <v-flex xs2>
-        <v-btn
-          outline
-          color="indigo"
-          @click="sendCards()"
-          v-bind:disabled="hasSelected"
-        >{{$t('send')}}</v-btn>
-      </v-flex>
-    </v-layout>
+    <v-btn
+      fixed
+      fab
+      bottom
+      right
+      large
+      color="accent"
+      @click="sendCards()"
+      v-bind:disabled="hasSelected"
+      v-if="!isCzar"
+    >
+      <v-icon>send</v-icon>
+    </v-btn>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import _fontSize from "../util/fontSize";
 @Component
 export default class SelectForm extends Vue {
   @Prop() public readonly prop: any;
@@ -88,17 +95,7 @@ export default class SelectForm extends Vue {
       this.hasSelected = true;
     }
   }
-  private fontSize(text: string): string {
-    if (text.length < 50) {
-      return "1.1em";
-    } else if (text.length > 200) {
-      return "0.75em";
-    } else if (text.length > 136) {
-      return "0.85em";
-    } else if (text.length > 70) {
-      return "0.9em";
-    } else return "inherit";
-  }
+  private fontSize: (text: string) => string = _fontSize;
 }
 </script>
 
@@ -113,8 +110,11 @@ export default class SelectForm extends Vue {
       opacity: 1;
     }
   }
+  .v-card--link:focus:before{
+    opacity:0!important;
+  }
   .number {
-    font-size: 1.5em;
+    font-size: 1.3em;
     display: block;
     position: absolute;
     bottom: 0;

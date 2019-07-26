@@ -5,7 +5,7 @@
         <v-card-title primary-title>
           <v-container grid-list-md>
             <v-layout>
-              <h3 class="headline">{{$t("name-title")}}</h3>
+              <h3 class="headline">{{$t("name.title")}}</h3>
             </v-layout>
             <v-layout mt-4>
               <v-flex xs12>
@@ -13,14 +13,14 @@
                   v-model="name"
                   :counter="10"
                   @keypress.enter="send()"
-                  :label="$t('name-name')"
+                  :label="$t('name.name')"
                   required
                 ></v-text-field>
               </v-flex>
             </v-layout>
-            <v-layout mt-2 row right>
+            <v-layout mt-2 row justify-end>
               <v-flex xs2>
-                <v-btn outline color="indigo" @click="send()">{{$t('send')}}</v-btn>
+                <v-btn color="accent" large @click="send()">{{$t('send')}}</v-btn>
               </v-flex>
             </v-layout>
           </v-container>
@@ -37,8 +37,8 @@ export default class NameForm extends Vue {
   @Prop() public readonly prop: any;
   public name: string = "";
   public send(): void {
-    if(this.name.length>1){
-    this.$emit("nameSent", this.name);
+    if (this.name.length > 1) {
+      this.$emit("nameSent", this.name);
     }
   }
 }
@@ -46,14 +46,16 @@ export default class NameForm extends Vue {
 <i18n>
 {
   "en": {
-    "name-taken": "This name is already taken.",
-    "name-title" : "Choose your name",
-    "name-name": "Player name"
+    "name": {
+      "title" : "Choose your name",
+      "name": "Player name"
+    }
   },
   "es": {
-    "name-taken": "Ya existe un jugador con ese nombre.",
-    "name-title" : "Ingresa un nombre",
-    "name-name": "Nombre de jugador"
+    "name":{
+      "title" : "Ingresa un nombre",
+      "name": "Nombre de jugador"
+    }
   }
 }
 </i18n>

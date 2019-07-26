@@ -15,7 +15,7 @@
     ></component>
     <v-snackbar v-model="error.state" :top="true" :timeout="3000">
       {{$t(error.text,error.props)}}
-      <v-btn flat @click="error.state = false">{{$t('close')}}</v-btn>
+      <v-btn text @click="error.state = false">{{$t('close')}}</v-btn>
     </v-snackbar>
   </div>
 </template>
@@ -60,7 +60,7 @@ export default class Home extends Vue {
     this.currentComponent = NameForm;
   }
   private onNameTaken(event: Event) {
-    this.error.text = "error-name-taken";
+    this.error.text = "error.name-taken";
     this.error.state = true;
   }
   private onNameSent(name: string) {
@@ -108,14 +108,14 @@ export default class Home extends Vue {
   private onError(error: string, arg: any) {
     switch (error) {
       case "select":
-        this.error.text = "error-select";
+        this.error.text = "error.select";
         this.error.props = { count: arg };
         break;
       case "choose":
-        this.error.text = "error-choose";
+        this.error.text = "error.choose";
         break;
       case "noPack":
-        this.error.text = "error-no-pack";
+        this.error.text = "error.no-pack";
         break;
     }
     this.error.state = true;
@@ -126,18 +126,22 @@ export default class Home extends Vue {
 <i18n>
 {
   "en": {
-    "error-name-taken": "This name is already taken.",
-    "error-choose":"Please choose a winner.",
-    "error-select": "Please select {count} card.",
-    "error-select_plural": "Please select {count} cards.",
-    "error-no-pack":"Please select at least one pack."
+    "error":{
+    "name-taken": "This name is already taken.",
+    "choose":"Please choose a winner.",
+    "select": "Please select {count} card.",
+    "select_plural": "Please select {count} cards.",
+    "no-pack":"Please select at least one pack."
+    }
   },
   "es": {
-    "error-name-taken": "Ya existe un jugador con ese nombre.",
-    "error-choose":"Seleccione un ganador.",
-    "error-select":"Seleccione {count} carta.",
-    "error-select_plural": "Seleccione {count} cartas.",
-    "error-no-pack":"Seleccione al menos un pack."
+    "error":{
+    "name-taken": "Ya existe un jugador con ese nombre.",
+    "choose":"Seleccione un ganador.",
+    "select":"Seleccione {count} carta.",
+    "select_plural": "Seleccione {count} cartas.",
+    "no-pack":"Seleccione al menos un pack."
+    }
 
   }
 }

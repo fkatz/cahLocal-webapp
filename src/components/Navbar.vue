@@ -1,35 +1,30 @@
 <template>
   <div>
-    <v-toolbar dark color="indigo">
-      <v-toolbar-side-icon @click="drawerVisible = !drawerVisible"></v-toolbar-side-icon>
+    <v-app-bar app flat dark color="accent">
+      <v-app-bar-nav-icon @click="drawerVisible = !drawerVisible"></v-app-bar-nav-icon>
 
       <v-toolbar-title>{{ $t('appname') }}</v-toolbar-title>
       <v-spacer></v-spacer>
-    </v-toolbar>
-    <v-navigation-drawer v-model="drawerVisible" fixed temporary>
-      <v-toolbar color="indigo" flat dark>
-        <v-list class="elevation-0">
-          <v-list-tile>
-            <v-list-tile-title class="title">{{$t('drawer-title')}}</v-list-tile-title>
-          </v-list-tile>
-          <v-expansion-panel light class="elevation-0">
-            <v-expansion-panel-content>
-              <template v-slot:header>
-                <div>{{$t('drawer-language')}}</div>
-              </template>
-                <v-btn-toggle class="pa-1 text-xs-center xs12 container" v-model="locale">
-                    <v-layout justify-space-around>
-                      <div>
-                        <v-btn class="ma-1" flat value="en">English</v-btn>
-                        <v-btn class="ma-1" flat value="es">Español</v-btn>
-                        </div>
-                    </v-layout>
-                </v-btn-toggle>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-          <v-divider />
-        </v-list>
-      </v-toolbar>
+    </v-app-bar>
+    <v-navigation-drawer v-model="drawerVisible" temporary app dark color="accent">
+      <v-list class="elevation-0" dark>
+        <v-list-item>
+          <v-list-item-title class="title">{{$t('drawer.title')}}</v-list-item-title>
+        </v-list-item>
+          <v-list-group active-class="v-list-group-active">
+            <template v-slot:activator>
+              <v-list-item-title dark>{{$t('drawer.language')}}</v-list-item-title>
+            </template>
+            <v-btn-toggle class="pa-1 text-xs-center xs12 container accent" v-model="locale">
+              <v-layout justify-space-around>
+                <div>
+                  <v-btn class="ma-1 elevation-0 accent" value="en">English</v-btn>
+                  <v-btn class="ma-1 elevation-0 accent" value="es">Español</v-btn>
+                </div>
+              </v-layout>
+            </v-btn-toggle>
+          </v-list-group>
+      </v-list>
     </v-navigation-drawer>
   </div>
 </template>
@@ -41,12 +36,11 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 export default class Navbar extends Vue {
   private drawerVisible: boolean = false;
   private i18n = i18n;
-  private locale:string = i18n.locale;
-  @Watch("locale") onLocaleChanged(locale:string){
+  private locale: string = i18n.locale;
+  @Watch("locale") onLocaleChanged(locale: string) {
     i18n.locale = locale;
-    document.cookie="locale="+locale+";";
+    document.cookie = "locale=" + locale + ";";
   }
-
 }
 </script>
 
@@ -54,12 +48,28 @@ export default class Navbar extends Vue {
 <i18n>
 {
   "en": {
-    "drawer-title": "Settings",
-    "drawer-language": "Language"
+    "drawer":{
+      "title": "Settings",
+      "language": "Language"
+    }
   },
   "es": {
-    "drawer-title": "Opciones",
-    "drawer-language": "Idioma"
+    "drawer":{
+      "title": "Opciones",
+      "language": "Idioma"
+    }
   }
 }
 </i18n>
+
+<style>
+.v-overlay.v-overlay--active.theme--dark{
+  z-index:6!important;
+}
+.v-list-group-active{
+  color:white;
+}
+.v-toolbar__title{
+  user-select:none;
+}
+</style>

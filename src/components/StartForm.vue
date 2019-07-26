@@ -6,24 +6,28 @@
           <v-container grid-list-md>
             <v-layout>
               <h3 class="headline">
-                  <span v-if="askStart">{{$t('start-title-start')}}</span>
-                    <span v-else>{{$t('start-title-wait')}}</span>
-                  </h3>
+                <span v-if="askStart">{{$t('start-form.title-start')}}</span>
+                <span v-else>{{$t('start-form.title-wait')}}</span>
+              </h3>
             </v-layout>
-            <v-layout mt-4>
-              <v-flex xs12>
-                {{$t('start-players')}}
-                <ul>
-                  <li v-for="player in players" v-bind:key="player">{{player}}</li>
-                </ul>
-              </v-flex>
-            </v-layout>
-            <v-layout mt-2 row right>
-              <v-flex xs2>
-                <v-btn outline color="indigo" @click="start()" v-bind:disabled="!askStart">
-                    <span v-if="askStart">{{$t('start')}}</span>
-                    <span v-else>{{$t('waiting')}}</span>
-                    </v-btn>
+            <v-simple-table>
+              <thead>
+                <tr>
+                  <th class="text-left">{{$t('start-form.players')}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="player in players" :key="player">
+                  <td>{{ player }}</td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+            <v-layout mt-2 row justify-end>
+              <v-flex xs3>
+                <v-btn color="accent" large @click="start()" v-bind:disabled="!askStart">
+                  <span v-if="askStart">{{$t('start')}}</span>
+                  <span v-else>{{$t('waiting')}}</span>
+                </v-btn>
               </v-flex>
             </v-layout>
           </v-container>
@@ -55,14 +59,18 @@ export default class StartForm extends Vue {
 <i18n>
 {
   "en": {
-    "start-title-start" : "Ready to begin",
-    "start-players":"Players:",
-    "start-title-wait": "Waiting for more players..."
+    "start-form":{
+      "title-start" : "Ready to begin",
+      "players":"Players",
+      "title-wait": "Waiting for more players..."
+    }
 },
   "es": {
-    "start-title-start" : "Listo para comenzar",
-    "start-players":"Jugadores:",
-    "start-title-wait": "Esperando más jugadores..."
+    "start-form":{
+      "title-start" : "Listo para comenzar",
+      "players":"Jugadores",
+      "title-wait": "Esperando más jugadores..."
+    }
   }
 }
 </i18n>

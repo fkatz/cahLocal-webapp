@@ -1,27 +1,18 @@
 <template>
   <v-app>
     <Navbar/>
+    <v-content>
     <keep-alive>
     <router-view/>
     </keep-alive>
+    </v-content>
   </v-app>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import Vuetify from "vuetify";
 import Navbar from "./components/Navbar.vue";
 import "vuetify/dist/vuetify.css";
-import colors from "vuetify/es5/util/colors";
-
-Vue.use(Vuetify, {
-  iconfont: "md",
-  options: {
-    customProperties: true
-  }
-});
-//import "../node_modules/materialize-css/dist/css/materialize.min.css"
-//import "../node_modules/materialize-css/dist/js/materialize.min.js"
 
 @Component({
   components: {

@@ -6,12 +6,12 @@
     <div class="mt-3">
       <div>
         <div v-if="isCzar">
-          <h2 v-if="!hasChosen">{{$t("choose-title-czar")}}</h2>
-          <h2 v-else>{{$t("choose-subtitle-czar")}}</h2>
+          <h2 v-if="!hasChosen">{{$t("choose.title-czar")}}</h2>
+          <h2 v-else>{{$t("choose.subtitle-czar")}}</h2>
         </div>
         <div v-else>
-          <h2>{{$t("choose-title-player")}}</h2>
-          <h3>{{$t("choose-subtitle-player")}}</h3>
+          <h2>{{$t("choose.title-player")}}</h2>
+          <h3>{{$t("choose.subtitle-player")}}</h3>
         </div>
         <v-container grid-list-md pa-0 mt-3>
           <v-item-group v-model="selectedWinnerIndex">
@@ -44,22 +44,24 @@
         </v-container>
       </div>
     </div>
-    <v-container>
-      <v-layout v-if="isCzar" col right>
-        <v-flex xs2>
-          <v-btn
-            outline
-            color="indigo"
-            @click="chooseWinner()"
-            v-bind:disabled="hasChosen"
-          >{{$t("send")}}</v-btn>
-        </v-flex>
-      </v-layout>
-    </v-container>
+    <v-btn
+      fixed
+      fab
+      bottom
+      right
+      large
+      color="accent"
+      @click="chooseWinner()"
+      v-bind:disabled="hasChosen"
+      v-if="isCzar"
+    >
+      <v-icon>send</v-icon>
+    </v-btn>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import _fontSize from "../util/fontSize";
 @Component
 export default class ChooseForm extends Vue {
   @Prop() public readonly prop: any;
@@ -101,7 +103,7 @@ export default class ChooseForm extends Vue {
       this.selectedWinnerIndex == undefined ||
       this.selectedWinnerIndex == -1
     ) {
-      this.$emit("error","choose");
+      this.$emit("error", "choose");
     } else {
       this.$emit("chose", {
         winner: this.chosenWinner,
@@ -110,17 +112,7 @@ export default class ChooseForm extends Vue {
       this.hasChosen = true;
     }
   }
-  private fontSize(text: string): string {
-    if (text.length < 50) {
-      return "1.1em";
-    } else if (text.length > 200) {
-      return "0.75em";
-    } else if (text.length > 136) {
-      return "0.85em";
-    } else if (text.length > 70) {
-      return "0.9em";
-    } else return "inherit";
-  }
+  private fontSize: (text: string) => string = _fontSize;
 }
 </script>
 
@@ -147,16 +139,20 @@ export default class ChooseForm extends Vue {
 <i18n>
 {
   "en": {
-    "choose-title-czar" : "Choose the best answer",
-    "choose-subtitle-czar": "Sending...",
-    "choose-title-player": "Answers recieved",
-    "choose-subtitle-player": "Waiting for the Czar..."
+    "choose":{
+      "title-czar" : "Choose the best answer",
+      "subtitle-czar": "Sending...",
+      "title-player": "Answers recieved",
+      "subtitle-player": "Waiting for the Czar..."
+    }
   },
   "es": {
-    "choose-title-czar" : "Elije la mejor respuesta",
-    "choose-subtitle-czar": "Enviando respuesta...",
-    "choose-title-player": "Respuestas recibidas",
-    "choose-subtitle-player": "Esperando al juez..."
+    "choose":{
+      "title-czar" : "Elije la mejor respuesta",
+      "subtitle-czar": "Enviando respuesta...",
+      "title-player": "Respuestas recibidas",
+      "subtitle-player": "Esperando al juez..."
+    }
   }
 }
 </i18n>

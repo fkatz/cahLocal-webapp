@@ -47,7 +47,7 @@
                 <template v-slot:selection="data">
                   <v-chip
                     dark
-                    :selected="data.selected"
+                    :input-value="data.selected"
                     :color="chipColor(data.item)"
                     close
                     @input="remove(data.item)"
@@ -61,9 +61,9 @@
                 </template>
               </v-combobox>
             </v-layout>
-            <v-layout row right>
+            <v-layout row justify-end>
               <v-flex xs2>
-                <v-btn outline color="indigo" @click="newGame()">{{$t("create")}}</v-btn>
+                <v-btn color="accent" large dark @click="newGame()">{{$t("create")}}</v-btn>
               </v-flex>
             </v-layout>
           </v-container>
@@ -88,9 +88,9 @@
                 ></v-text-field>
               </v-flex>
             </v-layout>
-            <v-layout row right>
+            <v-layout row justify-end>
               <v-flex xs2>
-                <v-btn outline color="indigo" @click="joinGame()">{{$t("join")}}</v-btn>
+                <v-btn color="accent" large dark @click="joinGame()">{{$t("join")}}</v-btn>
               </v-flex>
             </v-layout>
           </v-container>
