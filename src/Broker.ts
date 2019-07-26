@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-const socketURL = "http://localhost:8484/";
+const socketURL = "/";
 export class Broker {
     private socket: SocketIOClient.Socket;
     constructor() {
