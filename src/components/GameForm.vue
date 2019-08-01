@@ -62,9 +62,7 @@
               </v-combobox>
             </v-layout>
             <v-layout row justify-end>
-              <v-flex xs2>
                 <v-btn color="accent" large dark @click="newGame()">{{$t("create")}}</v-btn>
-              </v-flex>
             </v-layout>
           </v-container>
         </v-card-title>
@@ -89,9 +87,7 @@
               </v-flex>
             </v-layout>
             <v-layout row justify-end>
-              <v-flex xs2>
                 <v-btn color="accent" large dark @click="joinGame()">{{$t("join")}}</v-btn>
-              </v-flex>
             </v-layout>
           </v-container>
         </v-card-title>

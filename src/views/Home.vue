@@ -14,7 +14,7 @@
       class="tab"
     ></component>
     <v-snackbar v-model="error.state" :top="true" :timeout="3000">
-      {{$t(error.text,error.props)}}
+      {{$tc(error.text,error.n,error.props)}}
       <v-btn text @click="error.state = false">{{$t('close')}}</v-btn>
     </v-snackbar>
   </div>
@@ -38,7 +38,7 @@ export default class Home extends Vue {
   private playerName?: string;
   public currentComponent: any = HelloWorld;
   private prop: any = { askStart: false, players: [], nameTaken: false };
-  private error: { state: boolean; text: string; props: any } = {
+  private error: { state: boolean; text: string; props: any, n?:number } = {
     state: false,
     text: "",
     props: {}
@@ -55,12 +55,18 @@ export default class Home extends Vue {
     broker.emitter.addEventListener("winner", this.onWinner as EventListener);
     broker.emitter.addEventListener("nameTaken", this
       .onNameTaken as EventListener);
+    broker.emitter.addEventListener("lobbyNotFound", this
+      .onLobbyNotFound as EventListener);
   }
   private onConnect(event: Event) {
     this.currentComponent = NameForm;
   }
   private onNameTaken(event: Event) {
     this.error.text = "error.name-taken";
+    this.error.state = true;
+  }
+    private onLobbyNotFound(event: Event) {
+    this.error.text = "error.lobby-not-found";
     this.error.state = true;
   }
   private onNameSent(name: string) {
@@ -105,11 +111,13 @@ export default class Home extends Vue {
   private onNext() {
     broker.nextTurn();
   }
-  private onError(error: string, arg: any) {
+  private onError(args:[string, any]|string) {
+    let error:string= (typeof args == "string")? args:args[0];
+    console.log(error,args);
     switch (error) {
       case "select":
         this.error.text = "error.select";
-        this.error.props = { count: arg };
+        this.error.n = args[1].n;
         break;
       case "choose":
         this.error.text = "error.choose";
@@ -129,18 +137,18 @@ export default class Home extends Vue {
     "error":{
     "name-taken": "This name is already taken.",
     "choose":"Please choose a winner.",
-    "select": "Please select {count} card.",
-    "select_plural": "Please select {count} cards.",
-    "no-pack":"Please select at least one pack."
+    "select": "Please select {n} card.|Please select {n} cards.",
+    "no-pack":"Please select at least one pack.",
+    "lobby-not-found":"Game not found."
     }
   },
   "es": {
     "error":{
     "name-taken": "Ya existe un jugador con ese nombre.",
     "choose":"Seleccione un ganador.",
-    "select":"Seleccione {count} carta.",
-    "select_plural": "Seleccione {count} cartas.",
-    "no-pack":"Seleccione al menos un pack."
+    "select":"Seleccione {n} carta.|Seleccione {n} cartas.",
+    "no-pack":"Seleccione al menos un pack.",
+    "lobby-not-found":"No se encontró un juego con ese nombre."
     }
 
   }

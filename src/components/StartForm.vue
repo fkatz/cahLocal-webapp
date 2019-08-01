@@ -23,12 +23,10 @@
               </tbody>
             </v-simple-table>
             <v-layout mt-2 row justify-end>
-              <v-flex xs3>
-                <v-btn color="accent" large @click="start()" v-bind:disabled="!askStart">
+                <v-btn color="accent" large @click="start()" :disabled="!askStart">
                   <span v-if="askStart">{{$t('start')}}</span>
                   <span v-else>{{$t('waiting')}}</span>
                 </v-btn>
-              </v-flex>
             </v-layout>
           </v-container>
         </v-card-title>

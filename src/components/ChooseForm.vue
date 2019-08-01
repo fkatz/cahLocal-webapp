@@ -28,7 +28,7 @@
                     <v-card
                       v-ripple="isCzar"
                       class="card"
-                      v-for="card in select.cards"
+                      v-for="card in select.wSelected"
                       v-bind:key="card.text"
                     >
                       <v-card-title
@@ -95,7 +95,7 @@ export default class ChooseForm extends Vue {
       this.selectedWinnerIndex != undefined &&
       this.selects[this.selectedWinnerIndex] != undefined
     ) {
-      return this.selects[this.selectedWinnerIndex].cards;
+      return this.selects[this.selectedWinnerIndex].wSelected;
     }
   }
   private chooseWinner() {

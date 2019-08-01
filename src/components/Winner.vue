@@ -7,7 +7,7 @@
             <v-layout justify-start>
               <v-flex>
                 <h2>
-                  <span v-if="!isFinal">{{$t('winner.points-turn',{turn:turn})}}</span>
+                  <span v-if="!isFinal">{{$t('winner.points-turn',{turn:turn,maxTurns:maxTurns})}}</span>
                   <span v-else>{{$t('winner.points-turn-final')}}</span>
                 </h2>
               </v-flex>
@@ -61,13 +61,17 @@ export default class Winner extends Vue {
     return this.prop.winner.winner;
   }
   get isFinal() {
-    return this.prop.winner.isFinal;
+    return this.prop.winner.turn == this.prop.winner.maxTurns;
   }
   get points() {
-    return this.prop.winner.points;
+    let points = this.prop.winner.points as {points:number,player:string}[];
+    return points.sort((a,b)=>b.points-a.points);
   }
   get turn() {
     return this.prop.winner.turn;
+  }
+  get maxTurns() {
+    return this.prop.winner.maxTurns;
   }
   get wCards() {
     return this.prop.winner.wChosen;
@@ -102,7 +106,7 @@ export default class Winner extends Vue {
       "points-points": "Points",
       "points-player":"Player",
       "points-turn-final": "Final round",
-      "points-turn":"Round #{turn}"
+      "points-turn":"Round {turn} of {maxTurns}"
     }
   },
   "es": {
@@ -111,7 +115,7 @@ export default class Winner extends Vue {
       "points-points": "Puntuación",
       "points-player":"Jugador",
       "points-turn-final": "Ronda final",
-      "points-turn":"Ronda {turn}"
+      "points-turn":"Ronda {turn} de {maxTurns}"
     }
   }
 }

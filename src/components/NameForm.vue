@@ -19,9 +19,7 @@
               </v-flex>
             </v-layout>
             <v-layout mt-2 row justify-end>
-              <v-flex xs2>
                 <v-btn color="accent" large @click="send()">{{$t('send')}}</v-btn>
-              </v-flex>
             </v-layout>
           </v-container>
         </v-card-title>

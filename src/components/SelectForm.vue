@@ -13,7 +13,7 @@
         <h3>
           <span
             v-if="!hasSelected"
-          >{{$t(black.requires==1?'select-subtitle-player':'select-subtitle-player_plural',{count: black.requires})}}</span>
+          >{{$tc('select-subtitle-player', black.requires)}}</span>
           <span v-else>{{$t('select-subtitle-player-selected')}}</span>
         </h3>
       </div>
@@ -89,7 +89,7 @@ export default class SelectForm extends Vue {
   }
   private sendCards() {
     if (this.selected.length != this.black.requires) {
-      this.$emit("error", "select", this.black.requires);
+      this.$emit("error", ["select", {n:this.black.requires}]);
     } else {
       this.$emit("select", this.selected);
       this.hasSelected = true;
@@ -142,8 +142,7 @@ export default class SelectForm extends Vue {
     "select-title-czar" : "You are the Czar.",
     "select-subtitle-czar": "Waiting for the players...",
     "select-title-player":"{czar} is the Czar.",
-    "select-subtitle-player":"Select {count} card.",
-    "select-subtitle-player_plural":"Select {count} cards.",
+    "select-subtitle-player":"Select {n} card.|Select {n} cards.",
     "select-subtitle-player-selected":"Waiting for the other players...",
     "waiting": "Waiting..."
   },
@@ -151,8 +150,7 @@ export default class SelectForm extends Vue {
     "select-title-czar" : "Eres el juez",
     "select-subtitle-czar": "Esperando a los demás jugadores...",
     "select-title-player":"{czar} es el juez.",
-    "select-subtitle-player":"Selecciona {count} carta.",
-    "select-subtitle-player_plural":"Selecciona {count} cartas.",
+    "select-subtitle-player":"Selecciona {n} carta.|Selecciona {n} cartas.",
     "select-subtitle-player-selected":"Esperando a los demás jugadores...",
     "waiting": "Esperando"
   }

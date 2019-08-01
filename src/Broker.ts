@@ -36,6 +36,10 @@ export class Broker {
                     detail: select
                 }));
         });
+        this.socket.on("lobbyNotFound",()=>{
+            this.emitter.dispatchEvent(
+                new CustomEvent("lobbyNotFound", { detail: {} }));
+        })
         this.socket.on("askChoose", (chooseJSON: string) => {
             var choose = JSON.parse(chooseJSON);
             this.emitter.dispatchEvent(
@@ -54,10 +58,10 @@ export class Broker {
         this.socket.emit("newPlayer", { playerName: name });
     }
     public newGame(name: string, turns: number, cards: number, packs:string[]) {
-        this.socket.emit("newGame", { player: name, maxTurns: turns, maxCards: cards, packs:packs});
+        this.socket.emit("selectGame", {create:{ player: name, maxTurns: turns, maxCards: cards, packs:packs}});
     }
     public joinGame(name: string, host: string) {
-        this.socket.emit("selectGame", { player: name, host: host });
+        this.socket.emit("selectGame", {join:{ player: name, host: host }});
     }
     public start() {
         this.socket.emit("start");
