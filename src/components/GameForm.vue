@@ -110,8 +110,8 @@ export default class GameForm extends Vue {
     | { code: string; name?: string; error?: string }
     | string)[] = [];
   public host: string = "";
-  public turns: number = 15;
-  public cards: number = 10;
+  public turns: number = 10;
+  public cards: number = 7;
   @Watch("selectedPacks") onSelectedPacksChanged(
     newSel: ({ code: string; name: string } | string)[]
   ) {
