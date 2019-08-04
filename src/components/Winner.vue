@@ -38,12 +38,10 @@
               </tbody>
             </v-simple-table>
             <v-layout mt-2 row justify-end>
-              <v-flex xs3>
                 <v-btn color="accent" large @click="next()">
                   <span v-if="!isFinal">{{$t('continue')}}</span>
                   <span v-else>{{$t('back')}}</span>
                 </v-btn>
-              </v-flex>
             </v-layout>
           </v-container>
         </v-card-title>
