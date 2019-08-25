@@ -28,14 +28,13 @@ import SelectForm from "../components/SelectForm.vue";
 import ChooseForm from "../components/ChooseForm.vue";
 import Winner from "../components/Winner.vue";
 import { Prop, Component, Vue } from "vue-property-decorator";
+import PlayerModule from "../PlayerModule"
 
-import { Broker } from "../Broker";
-const broker = new Broker();
+import broker from "../Broker";
 @Component({
   components: {}
 })
 export default class Home extends Vue {
-  private playerName?: string;
   public currentComponent: any = HelloWorld;
   private prop: any = { askStart: false, players: [], nameTaken: false };
   private error: { state: boolean; text: string; props: any, n?:number } = {
@@ -46,6 +45,7 @@ export default class Home extends Vue {
   private created() {
     broker.emitter.addEventListener("connect", this.onConnect as EventListener);
     broker.emitter.addEventListener("askGame", this.onAskGame as EventListener);
+    broker.emitter.addEventListener("askName", this.onAskName as EventListener);
     broker.emitter.addEventListener("askStart", this
       .onAskStart as EventListener);
     broker.emitter.addEventListener("askSelect", this
@@ -59,6 +59,15 @@ export default class Home extends Vue {
       .onLobbyNotFound as EventListener);
   }
   private onConnect(event: Event) {
+    if(PlayerModule.logged){
+      broker.login(PlayerModule.name);
+    }
+    else broker.login("");
+  }
+  private onAskName(event:Event){
+    PlayerModule.logged = false;
+    PlayerModule.inGame = false;
+    PlayerModule.inLobby = false;
     this.currentComponent = NameForm;
   }
   private onNameTaken(event: Event) {
@@ -70,19 +79,23 @@ export default class Home extends Vue {
     this.error.state = true;
   }
   private onNameSent(name: string) {
-    this.playerName = name;
+    PlayerModule.name = name;
     broker.sendName(name);
   }
   private onAskGame() {
+    PlayerModule.logged = true;
+    PlayerModule.inGame = false;
+    PlayerModule.inLobby = false;
     this.currentComponent = GameForm;
   }
   private onNewGame(obj: any) {
-    broker.newGame(this.playerName!, obj.turns, obj.cards, obj.packs);
+    broker.newGame(PlayerModule.name, obj.turns, obj.cards, obj.packs);
   }
   private onJoinGame(host: string) {
-    broker.joinGame(this.playerName!, host);
+    broker.joinGame(PlayerModule.name, host);
   }
   private onAskStart(event: CustomEvent) {
+    PlayerModule.inLobby = true;
     this.prop.players = event.detail.players;
     this.prop.askStart = event.detail.canStart;
     this.currentComponent = StartForm;
@@ -91,6 +104,7 @@ export default class Home extends Vue {
     broker.start();
   }
   private onAskSelectCards(event: CustomEvent) {
+    PlayerModule.inGame = true;
     this.prop.select = event.detail;
     this.currentComponent = SelectForm;
   }

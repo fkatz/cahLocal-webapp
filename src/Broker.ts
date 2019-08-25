@@ -1,10 +1,17 @@
 import io from 'socket.io-client';
 const socketURL = "/";
-export class Broker {
+class Broker {
     private socket: SocketIOClient.Socket;
     constructor() {
         this.socket = io(socketURL);
         this.socket.on("connect", () => {
+            console.log("connected");
+            this.emitter.dispatchEvent(
+                new CustomEvent("connect", { detail: {} }));
+        })
+        this.socket.on("disconnect", () => {
+            console.log("disconnected");
+            this.socket.connect();
             this.emitter.dispatchEvent(
                 new CustomEvent("connect", { detail: {} }));
         })
@@ -22,6 +29,9 @@ export class Broker {
         ))
         this.socket.on("askGame", () => this.emitter.dispatchEvent(
             new CustomEvent("askGame", { detail: {} })
+        ))
+        this.socket.on("askName", () => this.emitter.dispatchEvent(
+            new CustomEvent("askName", { detail: {} })
         ))
         this.socket.on("askStart", (startJSON: string) => this.emitter.dispatchEvent(
             new CustomEvent("askStart", {
@@ -57,8 +67,19 @@ export class Broker {
     public sendName(name: string) {
         this.socket.emit("newPlayer", { playerName: name });
     }
+    public login(name: string) {
+        this.socket.emit("login", { playerName: name });
+    }
     public newGame(name: string, turns: number, cards: number, packs:string[]) {
         this.socket.emit("selectGame", {create:{ player: name, maxTurns: turns, maxCards: cards, packs:packs}});
+    }
+    public abortGame() {
+        console.log("aborting game")
+        this.socket.emit("abortGame");
+    }
+    public releaseName() {
+        this.socket.emit("releaseName");
+        console.log("released name")
     }
     public joinGame(name: string, host: string) {
         this.socket.emit("selectGame", {join:{ player: name, host: host }});
@@ -77,3 +98,6 @@ export class Broker {
     }
     public emitter: EventTarget = new EventTarget();
 }
+
+let broker = new Broker();
+export default broker;
